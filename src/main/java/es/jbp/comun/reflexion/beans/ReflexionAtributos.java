@@ -79,6 +79,14 @@ public class ReflexionAtributos {
         listaAtributos.stream().forEach(atributo -> mapa.put(atributo.getNombre(), atributo.getValor()));
         mapaAObjeto(mapa, bean);
     }
+    
+    /**
+     * Recupera los valores de  un objeto javabea en una lista de atributos 
+     */
+    public void recuperarValoresAtributos(List<AtributoBean> listaAtributos, Object objeto) {
+        Map<String, Object> mapa = objetoAMapa(objeto);
+        listaAtributos.stream().forEach(atributo -> atributo.setValor(mapa.get(atributo.getNombre())));
+    }
 
     /**
      * Aplica los valor de una mapa sobre los atribitos de un objeto javabean.
