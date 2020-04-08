@@ -13,6 +13,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,31 +23,24 @@ import java.util.Map;
 public class SerializadorJson {
 
     private Gson gson = new Gson();
-    private Map<String, Class> mapaNombreClase = new HashMap<>();
-    private Map<Class, String> mapaClaseNombre = new HashMap<>();
+    private Map<String, Class> mapaAliasClase = new HashMap<>();
+    private Map<Class, String> mapaClaseAlias = new HashMap<>();
 
     private IParserObjetos parser;
     private ReflexionAtributos reflexion;
     
     public SerializadorJson(IParserObjetos parser) {
         this.parser = parser;
-//        asignarNombreClase("dimension", es.jbp.editorgrafico.geometria.DimensionReal.class);
-//        asignarNombreClase("punto", java.awt.geom.Point2D.Double.class);
-//        asignarNombreClase("color", java.awt.Color.class);
-//        asignarNombreClase("linea", es.jbp.editorgrafico.documento.ElementoLinea.class);
-//        asignarNombreClase("circulo", es.jbp.editorgrafico.documento.ElementoCirculo.class);
-//        asignarNombreClase("polyline", es.jbp.editorgrafico.documento.ElementoPolilinea.class);
-//        asignarNombreClase("documento", es.jbp.editorgrafico.documento.Documento.class);
         reflexion = new ReflexionAtributos(parser);
     }
 
-    public void asignarNombreClase(String nombre, Class clase) {
-        mapaNombreClase.put(nombre, clase);
-        mapaClaseNombre.put(clase, nombre);
+    public void asignarNombreClase(String alias, Class clase) {
+        mapaAliasClase.put(alias, clase);
+        mapaClaseAlias.put(clase, alias);
     }
 
     public String getNombreDeClase(Class clazz) {
-        String nombre = mapaClaseNombre.get(clazz);
+        String nombre = mapaClaseAlias.get(clazz);
         if (nombre == null) {
             return clazz.getCanonicalName();
         }
@@ -53,7 +48,13 @@ public class SerializadorJson {
     }
     
     public Class getClaseDeNombre(String nombre) {
-        Class clazz = mapaNombreClase.get(nombre);        
+        Class clazz = mapaAliasClase.get(nombre);      
+        if (clazz == null) {
+            try {
+                clazz = Class.forName(nombre);
+            } catch (ClassNotFoundException ex) {
+            }
+        }
         return clazz;
     }
 
