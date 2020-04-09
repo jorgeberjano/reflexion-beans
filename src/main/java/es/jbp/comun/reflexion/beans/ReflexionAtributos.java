@@ -7,6 +7,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -65,10 +66,19 @@ public class ReflexionAtributos {
                 lista.add(atributo);
             }
         }
+//
+//        return lista.stream()
+//                .sorted(Comparator.comparingInt(AtributoBean::getOrden))
+//                .collect(Collectors.toList());
 
-        return lista.stream()
-                .sorted(Comparator.comparingInt(AtributoBean::getOrden))
-                .collect(Collectors.toList());
+        Collections.sort(lista, new Comparator<AtributoBean>() {
+            @Override
+            public int compare(AtributoBean o1, AtributoBean o2) {
+                return o1.getOrden() - o2.getOrden();
+            }
+            
+        }); 
+        return lista;
     }
 
     /**
@@ -76,7 +86,10 @@ public class ReflexionAtributos {
      */
     public void aplicarValoresAtributos(List<AtributoBean> listaAtributos, Object bean) throws Exception {
         Map<String, Object> mapa = new HashMap<>();
-        listaAtributos.stream().forEach(atributo -> mapa.put(atributo.getNombre(), atributo.getValor()));
+        //listaAtributos.stream().forEach(atributo -> mapa.put(atributo.getNombre(), atributo.getValor()));
+        for (AtributoBean atributo : listaAtributos) {
+            mapa.put(atributo.getNombre(), atributo.getValor());
+        }
         mapaAObjeto(mapa, bean);
     }
     
@@ -85,8 +98,10 @@ public class ReflexionAtributos {
      */
     public void recuperarValoresAtributos(List<AtributoBean> listaAtributos, Object objeto) {
         Map<String, Object> mapa = objetoAMapa(objeto);
-        listaAtributos.stream().forEach(atributo ->
-                atributo.setValor(mapa.get(atributo.getNombre())));
+        //listaAtributos.stream().forEach(atributo -> atributo.setValor(mapa.get(atributo.getNombre())));
+        for (AtributoBean atributo : listaAtributos) { 
+            atributo.setValor(mapa.get(atributo.getNombre()));
+        }        
     }
 
     /**
