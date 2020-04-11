@@ -99,6 +99,9 @@ public class ReflexionAtributos {
     public void recuperarValoresAtributos(List<AtributoBean> listaAtributos, Object objeto) {
         Map<String, Object> mapa = objetoAMapa(objeto);
         //listaAtributos.stream().forEach(atributo -> atributo.setValor(mapa.get(atributo.getNombre())));
+        if (listaAtributos == null || mapa == null) {
+            return;
+        }
         for (AtributoBean atributo : listaAtributos) { 
             atributo.setValor(mapa.get(atributo.getNombre()));
         }        
