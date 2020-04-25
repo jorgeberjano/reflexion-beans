@@ -5,10 +5,19 @@ package es.jbp.comun.reflexion.beans;
  * @author jberjano
  */
 public class AtributoBean {
+    private Object bean;
     private String nombre;
     private Object valor;
     private Class clase;
     private int orden;   
+
+    public Object getBean() {
+        return bean;
+    }
+
+    public void setBean(Object bean) {
+        this.bean = bean;
+    }
 
     public String getNombre() {
         return nombre;

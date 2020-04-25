@@ -59,6 +59,7 @@ public class ReflexionAtributos {
                     valor = null;
                 }
                 AtributoBean atributo = new AtributoBean();
+                atributo.setBean(objeto);
                 atributo.setNombre(property.getName());
                 atributo.setClase(property.getPropertyType());
                 atributo.setValor(valor);
@@ -275,6 +276,10 @@ public class ReflexionAtributos {
             }
         }
         return null;
+    }
+
+    public void aplicarValorAtributo(AtributoBean atributo, Object bean) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
