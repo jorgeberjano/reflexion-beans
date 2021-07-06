@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -247,12 +246,12 @@ public class ReflexionAtributos {
     }
 
     private void agregarValoresAColeccion(Collection coleccion, Collection valores) {
-        // TODO: covertir los elementos al tipo de la lista
+        // TODO: convertir los elementos al tipo de la lista
         //coleccion.addAll(valores);
         Class clazz = coleccion.getClass();
         Method metodoAdd = buscarMetodoAdd(clazz);
         if (metodoAdd == null) {
-            System.err.println("La colección no tiene un metodo add con un parámetro");
+            System.err.println("La colección no tiene un método add con un parámetro");
             return;
         }
         Class claseParametro = metodoAdd.getParameterTypes()[0];
@@ -265,8 +264,9 @@ public class ReflexionAtributos {
     private Method buscarMetodoAdd(Class clazz) {
         Method[] metodos = clazz.getMethods();
         for (Method metodo : metodos) {
-            if (metodo.getName().equals("add") && metodo.getParameterCount() == 1) {
-                Class claseParametro = metodo.getParameterTypes()[0];
+            Class<?>[] parameterTypes = metodo.getParameterTypes();
+            if (metodo.getName().equals("add") && parameterTypes.length == 1) {
+                Class<?> claseParametro = parameterTypes[0];
                 if (claseParametro == Object.class) {
                     continue;
                 }
